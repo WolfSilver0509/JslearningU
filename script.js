@@ -1,5 +1,6 @@
 const bookList = document.querySelector('.book-list');
 const bookForm = document.querySelector('.book-form');
+const container = document.querySelector('.container');
 
 class Book{
     constructor(titre,auteur,annee){
@@ -19,6 +20,31 @@ class Book{
 
         bookList.appendChild(row);
     }
+
+    clearFields(){
+        document.getElementById('titre').value = " ";
+        document.getElementById('auteur').value = " ";
+        document.getElementById('annee').value = " ";
+    }
+    
+    showAlert(message, className){
+        const alert =  document.createElement('div');
+        alert.className = `alert ${className}`;
+        alert.appendChild(document.createTexteNode(message));
+        container.insertBefore(alert.bookForm);  
+        
+        setTimeout(() => {
+            document.querySelector('.alert').remove();
+        }, 2500)
+}
+}
+
+class Interface {
+    deleteBook(target){
+        if (target.className === "delete")
+            
+            target.parentElement.parentElement.remove();
+    }
 }
 
 bookForm.addEventListener('submit', (e)=>{
@@ -31,5 +57,16 @@ bookForm.addEventListener('submit', (e)=>{
 
     const book = new Book(titre,auteur,annee);
 
+if(titre ==="" || auteur ==="" || annee === ""){
+    book.showAlert('Remplisser les Champs !' , 'error');
+}
+
+
     book.addBookToList(book);
+    book.clearFields(book);
+})
+
+bookList.addEventListener('click',(e) => {
+    const ui = new Interface();
+    ui.deleteBook(e.target);
 })
