@@ -30,8 +30,8 @@ class Book{
     showAlert(message, className){
         const alert =  document.createElement('div');
         alert.className = `alert ${className}`;
-        alert.appendChild(document.createTexteNode(message));
-        container.insertBefore(alert.bookForm);  
+        alert.appendChild(document.createTextNode(message));
+        container.insertBefore(alert,bookForm);  
         
         setTimeout(() => {
             document.querySelector('.alert').remove();
