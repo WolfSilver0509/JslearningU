@@ -1,74 +1,34 @@
-// const voiture = {
-//     marque : 'Ford',
-//     annee : 2009,
-//     couleur : 'Blanche',
-//     rouler (){
-//         console.log(this.annee);
-//     }
-// }
-// //hasOnProperty = est ce qu'elle à cette propriété ?
-// //Methode objets avec 'values' pour les valeurs ( mettre key pour les nom des valeurs) on passe l'argument voiture pour avoir un tableau avec tout nos propriété
-// console.log(Object.values(voiture));
 
-// class voiture{
+const  url = 'https://blockchain.info/ticker';
 
-// constructor(marque,annee,option){
-//     this.marque = marque;
-//     this.annee = annee;
-//     this.option = option;
-// }
-// //Rajout d'option
-// rajoutOption(nomOption){
-//     this.option++;
-//     console.log(`Rajout de ${nomOption}, nombre d'option : ${this.option}`);
-//     return this;
-// }
 
-// //Methode dans la class Voiture
-// dateSortie(){
-//     console.log(`Date de sortie de notre voiture ${this.annee}`);
-// }
+function recupPrix () {
+// crée un requete 
 
-// }
+let requete = new XMLHttpRequest(); // Crée un objet 
 
-// const voiture1 = new voiture('Ford', 2009, 0);
-// const voiture2 = new voiture('Toyota', 2012);
-// const voiture3 = new voiture('Peugeot' , 2010);
-// console.log(voiture1, voiture2, voiture3);
+requete.open('GET',url); // premier params GET( utilisation d'uune url) POST - deuxiem params url de l'API
 
-// voiture2.dateSortie();
-// voiture1.dateSortie();
-// voiture3.dateSortie();
+requete.responseType = 'json' ; // Nous attendons du JSON
 
-// console.log(voiture1);
-// voiture1
-// .rajoutOption('2 portes')
-// .rajoutOption('Peinture')
-// .rajoutOption('Climatisation')
-// .rajoutOption('Feu automatique')
+requete.send(); // Nous envoyer notre quette 
 
-// // extends permer de recuperer les meme propriété que la class voiture plutot que de tout réécrire.
-// class Moto extends voiture{
+// Des qu'on recoit une reponse on exécute une fonction
 
-//     assurance(){
-//         console.log("Vous avez pris une assurance");
-//     }
-// }
-
-// const moto1 = new Moto('Suzuki',2015,'Verte');
-
-// moto1.assurance();
-
-function Personnage(nom, taille){
-    this.nom = nom ;
-    this.taille = taille;
-    this.avancer = function(){
-        console.log(`${this.nom} avance ... `);
+requete.onload = function(){
+  if(requete.readyState === XMLHttpRequest.DONE){ // State état actuel est bien terminer et que c'est bien égal à xmlhttprequest
+    if(requete.status === 200){ //erreur 200 c'est que tout c'est bien passée 
+      let reponse = requete.response; // On stock la réponse
+      console.log ("ok");
+      let prixEnEuros = reponse.EUR.last;
+      console.log(prixEnEuros);
+      document.querySelector('#price_label').textContent = prixEnEuros; // Affichage dans le document
+      
     }
+    else{
+      alert('Un probleme est intervenue , merci de réessayer plus tard.');
+    }
+  }
 }
-const perso1 = new Personnage( 'Buddy', 190);
-const perso2 = new Personnage( 'Anubis', 60);
-
-perso1.avancer();
-
-console.log(perso1, perso2);
+}
+setInterval(recupPrix, 1000) // Interval actualiser toute les 1000 secondes
